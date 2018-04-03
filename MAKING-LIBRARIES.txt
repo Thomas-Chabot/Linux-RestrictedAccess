@@ -1,0 +1,16 @@
+To make a library:
+1) Run the command :
+  ar rcs libNAME.a FILE.o
+
+This will create the static library code.
+
+2) Store this file (libNAME.a) in /usr/lib/.
+     Should end up as /usr/lib/libNAME.a
+
+3) Save the header file in /usr/include
+     Should end up as /usr/include/header.h
+
+4) To use:
+     - Update the code to include <header.h>
+     - Link in the library with -lNAME in the gcc -o command
+     - Run 'sudo make' when building (to access the files)
