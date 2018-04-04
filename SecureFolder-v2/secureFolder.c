@@ -1,5 +1,8 @@
 #include "secureFolder.h"
+#include "Persistence/Persistence.h"
+#include <string.h>
 
+#define PERSISTENT_FILE_PATH "/share/secure_folder_contents"
 Node* main_list = NULL;
 
 File* get_file (char*);
@@ -8,8 +11,10 @@ Permissions* create_user (int userId, int cr, int cw, int ce);
 File* create_secure_file (char* fileId);
 
 void delete_permissions (Node* permissions);
-void delete_data (Node* list);
-void do_delete (void* data);
+void delete_data (Node* list, int isFile);
+void do_delete (void* data, void* a);
+
+int numDigits (int num);
 
 int secure_file_exists (char* fileId) {
   return get_file (fileId) != NULL;
@@ -48,8 +53,10 @@ int remove_from_secure_folder (char* fileId) {
   File* file = get_file (fileId);
   if (file == NULL) return -1;
 
+  int tr = 1;
+
   delete_permissions (file -> users);
-  delete_data (main_list);
+  do_delete (file, &tr);
   return list_remove (&main_list, file);
 }
 
@@ -66,7 +73,10 @@ int revoke_access (char* fileId, int userId) {
 
 // Helper Functions
 int isFile (void* element, void* fileId) {
-  return *((char**)fileId) == ((File*)element) -> fileId;
+  char* file = (char*)fileId;
+  char* f    = ((File*)element) -> fileId;
+
+  return strcmp (file, f) == 0;
 }
 
 int isUser (void* element, void* userId) {
@@ -75,7 +85,7 @@ int isUser (void* element, void* userId) {
 
 // Get file / user
 File* get_file (char* fileId) {
-  return list_get (main_list, isFile, &fileId);
+  return list_get (main_list, isFile, fileId);
 }
 Permissions* get_user (File* file, int userId) {
   if (file == NULL) return NULL;
@@ -97,7 +107,10 @@ Permissions* create_user (int userId, int cr, int cw, int ce) {
 File* create_secure_file (char* fileId) {
   File* file = malloc (sizeof (File));
 
-  file -> fileId = fileId;
+  // Note: Need to allocate this dynamically - can't trust fileId will stay forever
+  file -> fileId = malloc (sizeof (char) * FILE_ID_LEN);
+
+  strcpy (file -> fileId, fileId);
   file -> users = init_list ();
 
   return file;
@@ -105,13 +118,32 @@ File* create_secure_file (char* fileId) {
 
 // Delete a user
 void delete_permissions (Node* permissions) {
-  delete_data (permissions);
+  delete_data (permissions, 0);
   delete_list (&permissions);
 }
 
-void delete_data (Node* list) {
-  list_each (list, do_delete);
+void delete_data (Node* list, int isFile) {
+  list_each (list, do_delete, &isFile);
 }
-void do_delete (void* data){
+void do_delete (void* data, void* n){
+  if (*(int*)n) {
+    File* f = (File*)data;
+    free (f -> fileId);
+  }
+
   free (data);
+}
+
+// Saving & Reloading
+void secure_folder_save () {
+  int fileSize = get_sf_size (main_list);
+  do_sf_save (main_list, PERSISTENT_FILE_PATH, fileSize + 1);
+}
+void secure_folder_load () {
+  do_sf_load (PERSISTENT_FILE_PATH);
+}
+
+void secure_folder_clear () {
+  delete_data(main_list, 1);
+  delete_list(&main_list);
 }

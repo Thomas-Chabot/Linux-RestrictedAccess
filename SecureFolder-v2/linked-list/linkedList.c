@@ -1,9 +1,9 @@
 #include "linkedList.h"
 
-void do_each (Node* head, void (*f)(void* node));
-void each (Node* head, void (*f)(void* node), void*(*g)(Node* node));
+void do_each (Node* head, void (*f)(void* node, void* a));
+void each (Node* head, void (*f)(void* node, void* args), void*(*g)(Node* node), void* args);
 
-void do_delete_node (void* node);
+void do_delete_node (void* node, void* a);
 Node* get_node (Node* head, void* data);
 
 void* get_self (Node* node);
@@ -75,8 +75,8 @@ void delete_list (Node** head) {
   *head = NULL;
 }
 
-void list_each (Node* head, void(*f)(void* data)){
-  each (head, f, get_data);
+void list_each (Node* head, void(*f)(void* data, void* arg), void* args){
+  each (head, f, get_data, args);
 }
 
 
@@ -84,12 +84,12 @@ void list_each (Node* head, void(*f)(void* data)){
 void* get_self (Node* node) { return node; }
 void* get_data (Node* node){ return node->data; }
 
-void do_delete_node (void* node) {
+void do_delete_node (void* node, void* a) {
   free (node);
 }
 
-void do_each (Node* head, void (*f)(void* node)) {
-  each (head, f, get_self);
+void do_each (Node* head, void (*f)(void* node, void* a)) {
+  each (head, f, get_self, NULL);
 }
 
 int is_node (void* data1, void* data2) {
@@ -112,14 +112,14 @@ Node* find_node (Node* head, int (*checkFunc)(void*, void*), void* additionalArg
   return NULL;
 }
 
-void each (Node* head, void (*f)(void* node), void*(*g)(Node* node)){
+void each (Node* head, void (*f)(void* node, void* arg), void*(*g)(Node* node), void* args){
   Node* cur = head;
   Node* next = NULL;
 
   while (cur != NULL) {
     next = cur->next;
 
-    (*f) (g (cur));
+    (*f) (g (cur), args);
     cur = next;
   }
 }
