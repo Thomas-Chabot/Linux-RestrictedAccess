@@ -5,6 +5,6 @@
 #include <uuid/uuid.h>
 #include <string.h>
 
-void get_id (const char *pathname, char*);
+void get_file_id (const char *pathname, char* result);
 
 #endif

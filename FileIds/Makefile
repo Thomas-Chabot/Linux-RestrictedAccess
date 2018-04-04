@@ -5,6 +5,7 @@ lib: fileIds.o
 	ar rcs libFileIds.a fileIds.o
 	sudo mv libFileIds.a /usr/lib/libFileIds.a
 	sudo cp fileIds.h /usr/include/fileIds.h
+	rm fileIds.o
 
 fileIds.o: fileIds.c
 	gcc -c fileIds.c

@@ -13,7 +13,7 @@ int do_get_value (const char*, ssize_t, void*);
 void generate_id (uuid_t*);
 
 // The main method
-void get_id (const char* pathname, char* result) {
+void get_file_id (const char* pathname, char* result) {
   uuid_t uuid;
   get_value (pathname, &uuid);
 
