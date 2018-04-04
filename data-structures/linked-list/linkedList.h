@@ -17,6 +17,6 @@ void* list_get (Node* head, int (*checkFunc)(void*, void*), void* additionalArgs
 void list_push (Node** head, void* data);
 int list_remove (Node** head, void* data);
 void delete_list (Node** head);
-void list_each (Node* head, void(*f)(void* data));
+void list_each (Node* head, void(*f)(void* data, void* arg), void* arg);
 
 #endif
