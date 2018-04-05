@@ -1,5 +1,6 @@
 Client: Client.o helpers.o functions.o
 	gcc -o secure_folder Client.o helpers.o functions.o -lFifoReadWrite
+	sudo mv secure_folder /bin/secure_folder
 
 tester: tester.o helpers.o
 	gcc -o tester tester.o helpers.o
