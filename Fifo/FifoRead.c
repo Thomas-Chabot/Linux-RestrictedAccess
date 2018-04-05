@@ -13,9 +13,11 @@ int fifo_read (char* fifoPath, char* message, int size)
     fd = open(fifoPath, O_RDONLY);
     if (fd < 0) return ERR_FR_OPEN;
 
-    if (read(fd, message, size) < 0)
+    int n = read (fd, message, size);
+    if (n < 0)
       return ERR_FR_READ;
-
+    message [n] = '\0';
+    
     close(fd);
 
     return 0;
