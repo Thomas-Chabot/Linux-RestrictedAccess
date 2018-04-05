@@ -2,11 +2,11 @@
 #define SECURE_FOLDER_CONTENTS_H
 
 #include <linkedList.h>
+#include <fileIds.h>
 #include <uuid/uuid.h>
 
 //#include <linkedList.h>
 
-#define UUID_LEN 36
 #define FILE_ID_LEN UUID_LEN + 1
 
 typedef struct {

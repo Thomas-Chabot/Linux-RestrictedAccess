@@ -1,7 +1,7 @@
 SUBDIRS := $(wildcard */.)
 
-lib: secureFolder.o linkedList.o Persistence/libPersistence.a
-		ar rcs libSecureFolder.a secureFolder.o Persistence/libPersistence.a linked-list/linkedList.o
+lib: secureFolder.o linkedList.o Persistence.o
+		ar rcs libSecureFolder.a Persistence/FolderSize.o Persistence/FolderSave.o Persistence/FolderLoad.o Persistence/shared.o secureFolder.o linked-list/linkedList.o
 		sudo mv libSecureFolder.a /usr/lib/libSecureFolder.a
 		sudo cp secureFolder.h /usr/include/secureFolder.h
 

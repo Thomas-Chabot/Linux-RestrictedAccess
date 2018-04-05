@@ -2,7 +2,7 @@
 #include "Persistence/Persistence.h"
 #include <string.h>
 
-#define PERSISTENT_FILE_PATH "/share/secure_folder_contents"
+#define PERSISTENT_FILE_PATH "/secure_folder/contents"
 Node* main_list = NULL;
 
 File* get_file (char*);
