@@ -9,7 +9,6 @@
 
 #define MAX_CALL_LEN 21
 #define MAX_FILE_PATH 4096
-#define MAX_COMMAND_LEN 4096
 
 #define CMD_ADD_USER "add_user"
 #define CMD_REVOKE_ACCESS "revoke_access"
