@@ -5,6 +5,8 @@
 #include <uuid/uuid.h>
 #include <string.h>
 
+#define UUID_LEN 36
+
 void get_file_id (const char *pathname, char* result);
 
 #endif
