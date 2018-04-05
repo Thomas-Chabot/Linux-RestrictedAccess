@@ -11,6 +11,8 @@ int add_user (int argc, char** argv, int offset, char* result);
 int revoke_access (int argc, char** argv, int offset, char* result);
 int remove_file_security (int argc, char** argv, int offset, char* result);
 
+int get_uid (int argc, char** argv, int index);
+
 int reqd_opt (int argc, int argNum, char* argName);
 void optional_opt (int argc, char** argv, int argNum, char* defaultValue, char** result);
 
@@ -25,22 +27,33 @@ void optional_opt (int argc, char** argv, int argNum, char* defaultValue, char**
 #define MSG_REVOKE_ACCESS "revoke_access"
 #define MSG_REMOVE_FILE "remove_file_security"
 
+#define USER_ID_LEN 5 // 4 characters & a NULL
+
 int parse_func (int argc, char* argv [], char* result) {
-  char* cmdType = argv [1];
-  strlower (cmdType);
+  char* cmdType;
+
+  // If no command line arguments were passed in, default to 'help'
+  if (argc < 2) cmdType = CMD_HELP;
+  else{
+    cmdType = strlower (argv [1]);
+  }
 
   if (strcmp (cmdType, CMD_ADD_USER) == 0) {
     return add_user (argc, argv, ARGS_OFFSET, result);
   } else if (strcmp (cmdType, CMD_REVOKE_ACCESS) == 0) {
+    printf ("Revoke Access\n");
     return revoke_access (argc, argv, ARGS_OFFSET, result);
   } else if (strcmp (cmdType, CMD_REMOVE_FILE_SECURITY) == 0) {
     return remove_file_security (argc, argv, ARGS_OFFSET, result);
   } else if (strcmp (cmdType, CMD_HELP) == 0) {
     printf ("The available options are:\n");
-    printf ("\t%s FilePath UserId CanRead CanWrite CanExecute\n", CMD_ADD_USER);
-    printf ("\t%s FilePath UserId\n", CMD_REVOKE_ACCESS);
+    printf ("\t%s FilePath Username CanRead CanWrite CanExecute\n", CMD_ADD_USER);
+    printf ("\t%s FilePath Username\n", CMD_REVOKE_ACCESS);
     printf ("\t%s FilePath\n", CMD_REMOVE_FILE_SECURITY);
 
+    return DO_NO_SEND;
+  } else {
+    printf ("Unknown argument: %s\n", cmdType);
     return DO_NO_SEND;
   }
 }
@@ -48,7 +61,7 @@ int parse_func (int argc, char* argv [], char* result) {
 int add_user (int argc, char** argv, int offset, char* result) {
   // First argument, second argument required. Third, fourth, fifth optional => default to 0
   if (reqd_opt (argc, offset, "FilePath") < 0) return -1;
-  if (reqd_opt (argc, offset + 1, "UserId") < 0) return -1;
+  int uid = get_uid (argc, argv, offset + 1);
 
   char* canRead;
   char* canWrite;
@@ -58,15 +71,15 @@ int add_user (int argc, char** argv, int offset, char* result) {
   optional_opt (argc, argv, offset + 3, "1", &canWrite);
   optional_opt (argc, argv, offset + 4, "1", &canExec);
 
-  sprintf (result, "%s %s %s %s %s %s", MSG_ADD_USER, argv[offset], argv[offset + 1], canRead, canWrite, canExec);
+  sprintf (result, "%s %s %d %s %s %s", MSG_ADD_USER, argv[offset], uid, canRead, canWrite, canExec);
   return 0;
 }
 
 int revoke_access (int argc, char** argv, int offset, char* result) {
   if (reqd_opt (argc, offset, "FilePath") < 0) return -1;
-  if (reqd_opt (argc, offset + 1, "UserId") < 0) return -1;
+  int uid = get_uid (argc, argv, offset + 1);
 
-  sprintf (result, "%s %s %s", MSG_REVOKE_ACCESS, argv[offset], argv[offset + 1]);
+  sprintf (result, "%s %s %d", MSG_REVOKE_ACCESS, argv[offset], uid);
   return 0;
 }
 
@@ -91,4 +104,11 @@ void optional_opt (int argc, char** argv, int argNum, char* defaultValue, char**
     *result = defaultValue;
   else
     *result = argv [argNum];
+}
+
+int get_uid (int argc, char** argv, int index) {
+  char* username = NULL;
+  if (argc > index) username = argv[index];
+
+  return getUserId (username);
 }

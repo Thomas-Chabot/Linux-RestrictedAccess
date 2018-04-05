@@ -16,8 +16,9 @@ int getUserId (char* username) {
 }
 
 // Convert a string to lower case
-void strlower (char* str) {
+char* strlower (char* str) {
   for(int i = 0; str[i]; i++){
     str[i] = tolower(str[i]);
   }
+  return str;
 }

@@ -3,6 +3,6 @@
 
 /* getUserId: returns -1 on failure & userID otherwise */
 int getUserId (char* username);
-void strlower (char* string);
+char* strlower (char* string); // Note: returns the same string
 
 #endif

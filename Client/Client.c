@@ -24,7 +24,6 @@ int writeMessage (char* message) {
       printf ("Open failed\n");
       break;
     default:
-      printf ("Message sent\n");
       break;
   }
   return status;
@@ -40,7 +39,7 @@ int main (int argc, char* argv []) {
   if (result < 0)
     return 0;
 
-  if (writeMessage ("add_user /secure_folder/test 1002 1 1 1") == 0) {
+  if (writeMessage (message) == 0) {
     readNextMessage (resp, 2);
 
     if (resp[0] == '1')
