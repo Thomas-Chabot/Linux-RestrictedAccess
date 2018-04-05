@@ -1,7 +1,7 @@
 #ifndef PERSISTENCE_SHARED_H
 #define PERSISTENCE_SHARED_H
 
-#include "secureFolder.h"
+#include "../secureFolder.h"
 #include <linkedList.h>
 #include <string.h>
 

@@ -29,11 +29,11 @@ tester.o: tester.c
 tester2.o: tester2.c
 	gcc -c tester2.c
 
-clean:
+clean: cleanLib
 	rm -f *.o tester *.a *~
 	make clean -C linked-list/
 	make clean -C Persistence/
 
 cleanLib:
-	rm /usr/lib/libSecureFolder.a
-	rm /usr/include/secureFolder.h
+	rm -f /usr/lib/libSecureFolder.a
+	rm -f /usr/include/secureFolder.h

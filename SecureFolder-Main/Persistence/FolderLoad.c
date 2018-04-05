@@ -23,9 +23,9 @@ void do_sf_load (char* saveFile) {
   args.offset = 0;
   args.fileMapping = do_mmap_read (saveFile, &args.size);
 
-  Node* newList = init_list ();
-  int numFiles;
+  if (args.fileMapping == (void*)-1) return;
 
+  int numFiles;
   load_num (&args, &numFiles);
   for (int i = 0; i < numFiles; i++) {
     load_file (&args);
@@ -77,7 +77,7 @@ void* do_mmap_read (char* filePath, int* fileSize) {
 
   fd = open (filePath, O_RDWR, S_IRUSR | S_IWUSR);
   if (fd < 0) {
-    fprintf (stderr, "Could not open file\n");
+    fprintf (stderr, "Could not open load file\n");
     return (void*)-1;
   }
 

@@ -12,9 +12,9 @@ tester.o: tester.c
 linkedList.o: linkedList.c
 	gcc -c linkedList.c
 
-clean:
+clean: cleanLib
 	rm -f *.o tester *~
 
 cleanLib:
-	sudo rm /usr/lib/liblinkedlist.a
-	sudo rm /usr/include/linkedList.h
+	sudo rm -f /usr/lib/liblinkedlist.a
+	sudo rm -f /usr/include/linkedList.h

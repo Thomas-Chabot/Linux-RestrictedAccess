@@ -2,7 +2,7 @@
 #include "Persistence/Persistence.h"
 #include <string.h>
 
-#define PERSISTENT_FILE_PATH "/secure_folder/contents"
+#define PERSISTENT_FILE_PATH "/secure_folder/data/contents"
 Node* main_list = NULL;
 
 File* get_file (char*);
@@ -34,6 +34,8 @@ int add_user_access (char* fileId, int userId, int cr, int cw, int ce) {
   File* file = get_file (fileId);
   if (file == NULL) return -1;
 
+  if (get_user (file, userId) != NULL) return -1;
+  
   Permissions* perms = create_user (userId, cr, cw, ce);
   list_push (&(file -> users), perms);
 
