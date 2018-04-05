@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <stdio.h>
+#include <limits.h>
 
 /* getUserId: returns -1 on failure & userID otherwise */
 int getUserId (char* username) {
@@ -21,4 +22,10 @@ char* strlower (char* str) {
     str[i] = tolower(str[i]);
   }
   return str;
+}
+
+
+// Convert relative to absolute path
+int getAbsPath (char* relativePath, char* result) {
+  return realpath (relativePath, result) != NULL;
 }
