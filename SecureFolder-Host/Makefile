@@ -2,7 +2,7 @@ boot: Triage
 	if ! grep -q '/secure_folder/app/Triage &' '/etc/rc.local'; then \
 		sudo sed -i -e '$$i \/secure_folder/app/Triage &\n' /etc/rc.local; \
 	fi
-	
+
 Triage: Connection.o helpers.o functions.o sf_pipes
 		gcc -o Triage Connection.o functions.o helpers.o -lFifoReadWrite -lSecureFolder -lFileIds -luuid
 		rm -f /secure_folder/app/Triage
@@ -21,5 +21,8 @@ functions.o: functions.c
 helpers.o: helpers.c
 	gcc -c helpers.c
 
-clean:
+clean: cleanBoot
 	rm -f *.o Triage
+
+cleanBoot:
+	sudo sed -i '\/secure_folder/d' /etc/rc.local

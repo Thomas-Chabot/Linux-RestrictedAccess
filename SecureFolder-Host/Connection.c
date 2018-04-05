@@ -2,6 +2,7 @@
 // Such as the piping mechanism.
 #include "Connection.h"
 #include <errno.h>
+#include <unistd.h>
 #include <FifoRead.h>
 #include <FifoWrite.h>
 #include <secureFolder.h>
@@ -13,6 +14,9 @@ int do_read (char* details, int* isChange) {
 
   read_str (&details, call_type);
   read_str (&details, file_path);
+
+  // File must exist...
+  if( access( file_path, F_OK ) == -1 ) return 0;
 
   get_file_id (file_path, file_id);
 
