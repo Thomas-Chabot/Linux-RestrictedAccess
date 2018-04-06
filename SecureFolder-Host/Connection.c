@@ -20,7 +20,10 @@ int do_read (char* details, int* isChange) {
 
   get_file_id (file_path, file_id);
 
-  if (strcmp (call_type, CMD_ADD_USER) == 0) {
+  if (strcmp (call_type, CMD_ADD_FILE) == 0) {
+    *isChange = 1;
+    return f_add_file (file_id, details);
+  } else if (strcmp (call_type, CMD_ADD_USER) == 0) {
     *isChange = 1;
     return f_add_user (file_id, details);
   } else if (strcmp (call_type, CMD_REVOKE_ACCESS) == 0) {

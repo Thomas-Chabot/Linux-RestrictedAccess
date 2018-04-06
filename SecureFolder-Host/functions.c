@@ -3,14 +3,22 @@
 
 #define MAX_PATH_LEN 40
 
+int f_add_file (char* fileId, char* s) {
+  int status;
+  int uid = read_int (&s);
+
+  status = add_to_secure_folder (fileId);
+  if (status != 0) return 0;
+
+  status = add_user_access (fileId, uid, 1, 1, 1);
+  return status == 0;
+}
+
 int f_add_user (char* fileId, char* s) {
   int uid      = read_int (&s);
   int canRead  = read_int (&s);
   int canWrite = read_int (&s);
   int canExec  = read_int (&s);
-
-  // in case not already in the secure folder
-  add_to_secure_folder (fileId);
 
   // add the user Permissions
   int status = add_user_access (fileId, uid, canRead, canWrite, canExec);

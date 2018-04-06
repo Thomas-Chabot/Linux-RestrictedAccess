@@ -8,8 +8,8 @@
 #include "helpers.h"
 
 #define MAX_CALL_LEN 21
-#define MAX_FILE_PATH 4096
 
+#define CMD_ADD_FILE "add_file"
 #define CMD_ADD_USER "add_user"
 #define CMD_REVOKE_ACCESS "revoke_access"
 #define CMD_CAN_ACCESS "user_can_access"
