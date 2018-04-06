@@ -3,6 +3,9 @@ boot: Triage
 		sudo sed -i -e '$$i \/secure_folder/app/Triage &\n' /etc/rc.local; \
 	fi
 
+run: Triage
+	/secure_folder/app/Triage &
+
 Triage: Connection.o helpers.o functions.o sf_pipes
 		gcc -o Triage Connection.o functions.o helpers.o -lFifoReadWrite -lSecureFolder -lFileIds -luuid
 		rm -f /secure_folder/app/Triage

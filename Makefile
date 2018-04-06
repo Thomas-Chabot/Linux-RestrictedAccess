@@ -13,7 +13,7 @@ all:
 	sudo make -C Client/
 	sudo make -C SecureFolder-Host/
 
-	echo "Reboot to complete installation"
+	echo "Please reboot to complete installation."
 
 clean:
 	sudo rm -r -f /secure_folder
