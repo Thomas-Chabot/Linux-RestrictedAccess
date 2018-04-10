@@ -1,5 +1,8 @@
 # Linux Restricted Access
 
+## Purpose
+This is a simple system designed to restrict access to various files on Linux. Restricting access allows certain designated users to see a file while others will see it as an empty document. The system currently has support for both files & directories.
+
 ## Setup
 ### Dependencies
 Use of this software requires the uuid-dev library. To install, run the following from a terminal:
