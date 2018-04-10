@@ -38,6 +38,7 @@ int f_revoke_access (char* fileId, char* s) {
 
 int f_user_can_access (char* fileId, char* s) {
   int uid = read_int (&s);
+  printf ("User ID %d can access? %d\n", uid, user_can_access (fileId, uid));
   return user_can_access (fileId, uid);
 }
 

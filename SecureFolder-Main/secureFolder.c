@@ -22,7 +22,7 @@ int secure_file_exists (char* fileId) {
 
 int user_can_access (char* fileId, int userId) {
   File* file = get_file (fileId);
-  if (file == NULL) return 0;
+  if (file == NULL) return 1;
 
   Permissions* user = get_user (file, userId);
   if (user == NULL) return 0;
@@ -35,7 +35,7 @@ int add_user_access (char* fileId, int userId, int cr, int cw, int ce) {
   if (file == NULL) return -1;
 
   if (get_user (file, userId) != NULL) return -1;
-  
+
   Permissions* perms = create_user (userId, cr, cw, ce);
   list_push (&(file -> users), perms);
 

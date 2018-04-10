@@ -10,8 +10,9 @@ all:
 	sudo make -C FileIds/
 	sudo make -C Users/
 	sudo make -C SecureFolder-Main/
-	sudo make -C Client/
 	sudo make -C SecureFolder-Host/
+	sudo make -C Client/
+	sudo make -C Restrict/
 
 	echo "Please reboot to complete installation."
 
@@ -24,3 +25,4 @@ clean:
 	sudo make clean -C SecureFolder-Main/
 	sudo make clean -C SecureFolder-Host/
 	sudo make clean -C Client/
+	sudo make clean -C Restrict/

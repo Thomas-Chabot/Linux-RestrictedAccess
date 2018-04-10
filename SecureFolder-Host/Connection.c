@@ -15,9 +15,10 @@ int do_read (char* details, int* isChange) {
   read_str (&details, call_type);
   read_str (&details, file_path);
 
+//  printf ("%s %s\n", call_type, file_path);
+
   // File must exist...
   if( access( file_path, F_OK ) == -1 ) return 0;
-
   get_file_id (file_path, file_id);
 
   if (strcmp (call_type, CMD_ADD_FILE) == 0) {
@@ -33,6 +34,7 @@ int do_read (char* details, int* isChange) {
     *isChange = 1;
     return f_remove_file_security (file_id, details);
   } else if (strcmp (call_type, CMD_CAN_ACCESS) == 0) {
+    printf ("Checking if user can access.\n");
     *isChange = 0;
     return f_user_can_access (file_id, details);
   } else {

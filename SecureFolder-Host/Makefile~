@@ -6,7 +6,7 @@ boot: Triage
 run: Triage
 	/secure_folder/app/Triage &
 
-Triage: sf_pipes Connection.o helpers.o functions.o
+Triage: Connection.o helpers.o functions.o sf_pipes
 		gcc -o Triage Connection.o functions.o helpers.o -lFifoReadWrite -lSecureFolder -lFileIds -luuid
 		rm -f /secure_folder/app/Triage
 		cp Triage /secure_folder/app/Triage

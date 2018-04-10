@@ -10,6 +10,9 @@ int main () {
   int userId = 15;
   int userId2 = 16;
 
+  fprintf (stdout, "User %d has access? %d\n", userId, user_can_access(uuid, userId));
+  fprintf (stdout, "User %d has access? %d\n", userId, user_can_access(uuid, userId2));
+
   if (add_to_secure_folder (uuid) < 0) {
     fprintf (stderr, "ERROR ADDING UUID TO SECURE FOLDER");
     return 0;
