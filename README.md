@@ -26,7 +26,7 @@ In order to make a change to the system, enter a command such as:
 
 ```secure_folder add_user /path/to/file User1```
 
-Which will add access to the file given at /path/to/file for the user User1. All other users will be restricted from using the file. More options are available as well; these will all be printed out by the client program.
+Which will add access to the file given at /path/to/file for the user User1. All other users will be restricted from using the file. More options are available as well; these can be all be printed out by the client program by calling secure_folder.
 
 ### Restricted Access
 When a file is in the Secure Folder, access to the file will be restricted to specific users. In the example above, only the user User1 will be able to access the file /path/to/file.
