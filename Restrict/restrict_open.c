@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <dirent.h>
 #include <dlfcn.h>
 #include <fcntl.h>
 #include <stdarg.h>
@@ -107,6 +108,19 @@ int execv(const char *filename, char *const argv[])
     }
 }
 
+extern DIR *opendir(const char *directoryPath) {
+  static DIR* (*_opendir)(const char *);
+
+  if (!_opendir) {
+      _opendir = dlsym(RTLD_NEXT, "opendir");
+  }
+  if (can_open(directoryPath)) {
+      return _opendir(directoryPath);
+  } else {
+      return NULL;
+  }
+}
+
 // These are stat() and stat64() functions, that internally in GNU libc() are
 // implemented as __xstat and __xstat64. See:
 // http://stackoverflow.com/questions/5478780/c-and-ld-preload-open-and-open64-calls-intercepted-but-not-stat64
@@ -139,6 +153,7 @@ int __xstat64(int x, const char *filename, struct stat64 *st)
         return -1;
     }
 }
+
 /*
 int access(const char *pathname, int mode)
 {
