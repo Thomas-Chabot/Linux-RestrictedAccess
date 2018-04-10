@@ -1,4 +1,4 @@
-# Linux Secure Folders
+# Linux Restricted Access
 
 ## Setup
 ### Dependencies
