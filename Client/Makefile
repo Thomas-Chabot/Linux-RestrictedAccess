@@ -1,7 +1,8 @@
 Client: Client.o helpers.o functions.o
 	gcc -o secure_folder Client.o helpers.o functions.o -lFifoReadWrite
-	sudo rm -f /bin/secure_folder
-	sudo mv secure_folder /bin/secure_folder
+	sudo rm -f /usr/bin/secure_folder
+	sudo mv secure_folder /usr/bin/secure_folder
+	sudo chmod a+rwx /usr/bin/secure_folder
 
 tester: tester.o helpers.o
 	gcc -o tester tester.o helpers.o
@@ -20,4 +21,4 @@ functions.o: functions/functions.c
 
 clean:
 	rm -f *.o tester helpers/*.o
-	rm -f /bin/secure_folder
+	rm -f /usr/bin/secure_folder

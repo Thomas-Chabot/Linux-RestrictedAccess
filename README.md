@@ -1,6 +1,12 @@
 # Linux Secure Folders
 
 ## Setup
+### Dependencies
+Use of this software requires the uuid-dev library. To install, run the following from a terminal:
+```sudo apt-get install uuid-dev```
+
+Once completed, the software can be installed to your device.
+
 ### Installation
 Use ```sudo make``` to make the program. Root access is required by the installation in order to install the necessary programs and libraries.
 

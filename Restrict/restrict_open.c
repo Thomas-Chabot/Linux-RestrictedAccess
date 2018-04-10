@@ -139,7 +139,7 @@ int __xstat64(int x, const char *filename, struct stat64 *st)
         return -1;
     }
 }
-
+/*
 int access(const char *pathname, int mode)
 {
     static int (*_access)(const char *pathname, int mode);
@@ -154,3 +154,4 @@ int access(const char *pathname, int mode)
         return -1;
     }
 }
+*/

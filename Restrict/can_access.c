@@ -17,14 +17,16 @@ int startsWith(const char *pre, const char *str);
 void read_response (char* resp);
 int writeMsg (const char* msg);
 
+int should_ignore (const char* pathname);
+
 int can_open (const char* pathname) {
   char msg [MAX_COMMAND_LEN];
   char path [PATH_MAX];
   expand_path (pathname, path); // get the actual path
 
-  // NOTE: The folder /secure_folder/ will be hardcoded to be ok - otherwise will cause recursive issues
-  // Also don't want to mess with the operating system
-  if (!startsWith ("/home", path)) return 1;
+  // NOTE: Only running operations on /home & /media, to avoid messing with the system
+  //if (!startsWith ("/home", path) && !startsWith ("/media", path) && !startsWith ("/var/shared", path)) return 1;
+  if (should_ignore (path)) return 1;
 
   // check if the user has access
   sprintf (msg, "%s %s %d", CMD_CAN_ACCESS, path, getUserId());
@@ -76,4 +78,15 @@ int startsWith(const char *pre, const char *str)
 
 int getUserId () {
   return getuid();
+}
+
+
+int should_ignore (const char* path) {
+  if (startsWith ("/secure_folder/", path)) return 1;
+
+  // Was having an issue with the .swp files - ignore these
+  if (strstr (path, ".swp") != NULL) return 1;
+
+  // Finally, if it doesn't exist - ignore it
+  return access (path, F_OK) == -1;
 }

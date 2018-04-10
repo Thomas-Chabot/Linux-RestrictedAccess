@@ -25,6 +25,7 @@ void optional_opt (int argc, char** argv, int argNum, char* defaultValue, char**
 #define MSG_ADD_USER "add_user"
 #define MSG_REVOKE_ACCESS "revoke_access"
 #define MSG_REMOVE_FILE_SECURITY "remove_file"
+#define MSG_CAN_ACCESS "can_access"
 #define MSG_HELP "help"
 
 #define USER_ID_LEN 5 // 4 characters & a NULL
@@ -40,6 +41,8 @@ int parse_func (int argc, char* argv [], char* result) {
 
   if (strcmp (cmdType, MSG_ADD_FILE) == 0) {
     return add_file (argc, argv, ARGS_OFFSET, result);
+  } else if (strcmp (cmdType, MSG_CAN_ACCESS) == 0) {
+    return can_access (argc, argv, ARGS_OFFSET, result);
   } else if (strcmp (cmdType, MSG_ADD_USER) == 0) {
     return add_user (argc, argv, ARGS_OFFSET, result);
   } else if (strcmp (cmdType, MSG_REVOKE_ACCESS) == 0) {
@@ -74,6 +77,20 @@ int add_file (int argc, char** argv, int offset, char* result) {
   return 0;
 }
 
+int can_access (int argc, char** argv, int offset, char* result) {
+  // First argument, second argument required. Third, fourth, fifth optional => default to 0
+  if (reqd_opt (argc, offset, "FilePath") < 0) return -1;
+
+  char filePath [MAX_FILE_PATH];
+  get_file_path (argv, offset, filePath);
+  if (filePath == NULL) return -1;
+
+  int uid = getUserId (NULL);
+
+  sprintf (result, "%s %s %d", CMD_CAN_ACCESS, filePath, uid);
+  return 0;
+}
+
 int add_user (int argc, char** argv, int offset, char* result) {
   // First argument, second argument required. Third, fourth, fifth optional => default to 0
   if (reqd_opt (argc, offset, "FilePath") < 0) return -1;
@@ -83,6 +100,7 @@ int add_user (int argc, char** argv, int offset, char* result) {
   if (filePath == NULL) return -1;
 
   int uid = get_uid (argc, argv, offset + 1);
+  int myUid = getUserId (NULL);
 
   char* canRead;
   char* canWrite;
@@ -92,7 +110,7 @@ int add_user (int argc, char** argv, int offset, char* result) {
   optional_opt (argc, argv, offset + 3, "1", &canWrite);
   optional_opt (argc, argv, offset + 4, "1", &canExec);
 
-  sprintf (result, "%s %s %d %s %s %s", CMD_ADD_USER, filePath, uid, canRead, canWrite, canExec);
+  sprintf (result, "%s %s %d %s %s %s %d", CMD_ADD_USER, filePath, uid, canRead, canWrite, canExec, myUid);
   return 0;
 }
 
@@ -104,8 +122,9 @@ int revoke_access (int argc, char** argv, int offset, char* result) {
   if (filePath == NULL) return -1;
 
   int uid = get_uid (argc, argv, offset + 1);
+  int myUid = getUserId (NULL);
 
-  sprintf (result, "%s %s %d", MSG_REVOKE_ACCESS, filePath, uid);
+  sprintf (result, "%s %s %d %d", MSG_REVOKE_ACCESS, filePath, uid, myUid);
   return 0;
 }
 
@@ -116,7 +135,9 @@ int remove_file_security (int argc, char** argv, int offset, char* result) {
   get_file_path (argv, offset, filePath);
   if (filePath == NULL) return -1;
 
-  sprintf (result, "%s %s", CMD_REMOVE_FILE, filePath);
+  int myUid = getUserId (NULL);
+
+  sprintf (result, "%s %s %d", CMD_REMOVE_FILE, filePath, myUid);
   return 0;
 }
 
