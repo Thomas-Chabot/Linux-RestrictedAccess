@@ -9,8 +9,8 @@ all:
 	sudo make -C Fifo/
 	sudo make -C FileIds/
 	sudo make -C Users/
-	sudo make -C SecureFolder-Main/
-	sudo make -C SecureFolder-Host/
+	sudo make -C SecureFolder/
+	sudo make -C Server/
 	sudo make -C Client/
 	sudo make -C Restrict/
 
@@ -22,7 +22,7 @@ clean:
 	sudo make clean -C Fifo/
 	sudo make clean -C FileIds/
 	sudo make clean -C Users/
-	sudo make clean -C SecureFolder-Main/
-	sudo make clean -C SecureFolder-Host/
+	sudo make clean -C SecureFolder/
+	sudo make clean -C Server/
 	sudo make clean -C Client/
 	sudo make clean -C Restrict/
